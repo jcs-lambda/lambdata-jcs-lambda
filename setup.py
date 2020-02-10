@@ -15,5 +15,6 @@ setup(
     url="https://github.com/jcs-lambda/lambdata-jcs-lambda",
     keywords="lambda school",
     packages=find_packages(), # ["my_lambdata"]
-    python_requires = ">=3.7.5"
+    python_requires = ">=3.7.5",
+    install_requires = ['numpy', 'pandas', 'ipython', 'matplotlib', 'seaborn']
 )
