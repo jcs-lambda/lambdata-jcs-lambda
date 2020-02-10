@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="lambdata_jcslambda",
-    version="0.1.1",
+    version="0.3.3",
     author="jcs-lambda",
     author_email="57103874+jcs-lambda@users.noreply.github.com",
     description="Example package for lambda school DS Unit 3",
@@ -15,6 +15,6 @@ setup(
     url="https://github.com/jcs-lambda/lambdata-jcs-lambda",
     keywords="lambda school",
     packages=find_packages(), # ["my_lambdata"]
-    python_requires = ">=3.7.5",
+    python_requires = ">=3.5",
     install_requires = ['numpy', 'pandas', 'ipython', 'matplotlib', 'seaborn']
 )

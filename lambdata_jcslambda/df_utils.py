@@ -25,14 +25,18 @@ def tvt_split(df, target:str='', random_state=None):
 
     return train, val, test
 
-def split_dates(df, date_column:str):
+def extract_date_parts(df, date_column:str, simple=True):
     assert date_column in df.columns, f'{date_column} not found in dataframe'
     df = df.copy()
     datetimes = pd.to_datetime(df[date_column], infer_datetime_format=True, errors='coerce')
     df['year'] = datetimes.dt.year
     df['month'] = datetimes.dt.month
     df['day'] = datetimes.dt.day
-    df['day_of_week'] = datetimes.dt.dayofweek
+    if not simple:
+        df['day_of_week'] = datetimes.dt.dayofweek
+        df['day_of_year'] = datetimes.dt.dayofyear
+        df['week'] = datetimes.dt.week
+        df['quarter'] = datetimes.dt.quarter
     df.drop(columns=date_column, inplace=True)
     return df
 
@@ -75,7 +79,7 @@ def barplots_low_card_feat_by_target_eq_class(target:str, target_class, datafram
     for feature in dataframe.columns[(dataframe.nunique() <= nunique) & (dataframe.nunique() > 1)].drop([target], errors='ignore'):
         barplot_feat_by_target_eq_class(feature, target, target_class, dataframe, ylim=ylim, figsize=figsize)
 
-def my_value_counts(dataframe, features):
+def value_counts(dataframe, features):
     if type(features) is not list:
         features = [features]
     for feature in features:
@@ -83,6 +87,7 @@ def my_value_counts(dataframe, features):
             'count' : dataframe[feature].value_counts().sort_index(),
             'percentage' : dataframe[feature].value_counts(normalize=True).sort_index()
         })
-    df.index.name = feature
-    display(df.sort_values(by='count', ascending=False))
+        df.index.name = feature
+        display(df.sort_values(by='count', ascending=False))
+    return
 
