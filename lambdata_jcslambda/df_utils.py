@@ -25,9 +25,9 @@ def tvt_split(df, target:str='', random_state=None):
 
     return train, val, test
 
-def extract_date_parts(df, date_column:str, simple=True):
+def extract_date_parts(dataframe, date_column:str, simple=True):
     assert date_column in df.columns, f'{date_column} not found in dataframe'
-    df = df.copy()
+    df = dataframe.copy()
     datetimes = pd.to_datetime(df[date_column], infer_datetime_format=True, errors='coerce')
     df['year'] = datetimes.dt.year
     df['month'] = datetimes.dt.month
