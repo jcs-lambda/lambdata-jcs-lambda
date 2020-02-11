@@ -12,6 +12,16 @@ from IPython.display import display
 
 
 def tvt_split(df, target: str='', random_state=None):
+    """
+    Split a pandas dataframe into train, validation, and test sets.
+
+    :param df: pandas dataframe, required
+    :param target: name of a column in df which is passed as stratify parameter
+        to sklearn.model_selection.train_test_split(), optional
+        if blank, does not use the stratify parameter
+    :param random_state: define the random_state
+    :returns: tuple of 3 dataframes - (train, validation, test)   
+    """
     if target != '' and target in df.columns:
         stratify = df[target]
     else:
@@ -97,4 +107,3 @@ def value_counts(dataframe, features):
         df.index.name = feature
         display(df.sort_values(by='count', ascending=False))
     return
-
