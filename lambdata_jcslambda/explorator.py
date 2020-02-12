@@ -10,9 +10,10 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from IPython.display import display
 
-from df_utils import tvt_split, extract_date_parts, describe, value_counts
-from df_utils import barplot_feat_by_target_eq_class
-from df_utils import barplots_low_card_feat_by_target_eq_class
+from .df_utils import tvt_split, extract_date_parts
+from .df_utils import describe, value_counts
+from .df_utils import barplot_feat_by_target_eq_class
+from .df_utils import barplots_low_card_feat_by_target_eq_class
 
 
 class Explorator(object):
