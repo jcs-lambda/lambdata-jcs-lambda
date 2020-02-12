@@ -1,6 +1,8 @@
 # lambdata-jcs-lambda
  python package of utility functions
 
+ current version: 0.3.9
+
 ## Installation
 
     pip install -i https://test.pypi.org/simple/ lambdata-jcslambda
