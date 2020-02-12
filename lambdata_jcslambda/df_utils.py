@@ -19,6 +19,7 @@ def tvt_split(df, target: str='', random_state=None):
     :param target: name of a column in df which is passed as stratify
         parameter to sklearn.model_selection.train_test_split(), optional
     :param random_state: define the random_state
+
     :returns: tuple of 3 dataframes - (train, validation, test)
     """
     if target != '' and target in df.columns:
@@ -56,6 +57,7 @@ def extract_date_parts(dataframe, date_column, simple=True):
     :param simple: if True, only convert to year, month, and day
         if False, also include day_of_week, day_of_year, week, and quarter
         optional, default: False
+
     :returns: a new dataframe with date_column removed and other columns added
     """
     assert date_column in dataframe.columns, \
@@ -88,6 +90,7 @@ def describe(dataframe, formatter={'all': lambda x: f'{x}'}):
     :param dataframe: pandas dataframe
     :param formatter: numpy formatter used in numpy.array2string
         pass None to use default numpy formatting
+
     :returns: pandas dataframe describing the dataframe passed as first param
     """
     def len_minified(series):
@@ -135,6 +138,7 @@ def barplot_feat_by_target_eq_class(
     :param dataframe: pandas dataframe containing feature and target columns
     :param ylim: upper limit of y-axis, optional, default: 0.7
     :param figsize: size of matplotlib figure, optional, default: (9, 6)
+
     :returns: nothing
     """
 
@@ -178,6 +182,7 @@ def barplots_low_card_feat_by_target_eq_class(
         values, optional, default: 15
     :param ylim: upper limit of y-axis, optional, default: 0.7
     :param figsize: size of matplotlib figure, optional, default: (9, 6)
+
     :returns: nothing
     """
     assert target in dataframe.columns, \
@@ -203,6 +208,7 @@ def value_counts(dataframe, features):
 
     :param dataframe: pandas dataframe
     :param features: a feature or list of features found in the dataframe
+
     :returns: nothing
     """
     if not isinstance(features, (list, set, tuple)):
