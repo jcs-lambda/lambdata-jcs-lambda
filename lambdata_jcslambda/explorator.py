@@ -31,7 +31,6 @@ class Explorator(object):
 
         :param target: name of a column in df which is passed as stratify
             parameter to sklearn.model_selection.train_test_split(), optional
-        :param random_state: define the random_state
 
         :returns: tuple of 3 dataframes - (train, validation, test)
         """
@@ -46,6 +45,8 @@ class Explorator(object):
         :param simple: if True, only convert to year, month, and day
             if False, also include day_of_week, day_of_year, week, and quarter
             optional, default: False
+        :param inplace: if True, replace this class's dataframe and return
+            nothing. optional, default: False
 
         :returns: a new dataframe with date_column removed and other
             columns added
