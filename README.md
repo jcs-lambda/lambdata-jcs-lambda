@@ -1,7 +1,11 @@
 # lambdata-jcs-lambda
  python package of utility functions
 
- current version: 0.4.1
+ current source versoin: 0.4.2
+ 
+ current test.pypi version: 0.4.1
+
+ difference: docstrings
 
 ## Installation
 
