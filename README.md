@@ -1,7 +1,7 @@
 # lambdata-jcs-lambda
  python package of utility functions
 
- current version: 0.3.9
+ current version: 0.4.0
 
 ## Installation
 
