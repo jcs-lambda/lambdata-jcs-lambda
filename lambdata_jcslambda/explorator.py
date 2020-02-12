@@ -59,7 +59,7 @@ class Explorator(object):
             feature=feature,
             target=target,
             target_class=target_class,
-            dataframe=self.dataframe
+            dataframe=self.dataframe,
             ylim=ylim,
             figsize=figsize
         )
