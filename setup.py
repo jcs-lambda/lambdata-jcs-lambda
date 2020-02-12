@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="lambdata_jcslambda",
-    version="0.4.0",
+    version="0.4.1",
     author="jcs-lambda",
     author_email="57103874+jcs-lambda@users.noreply.github.com",
     description="Example package for lambda school DS Unit 3",
