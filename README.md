@@ -1,7 +1,7 @@
 # lambdata-jcs-lambda
  python package of utility functions
 
- current source versoin: 0.4.2
+ current source version: 0.4.2
  
  current test.pypi version: 0.4.1
 
