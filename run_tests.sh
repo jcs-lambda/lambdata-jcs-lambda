@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo
 for F in tests/[!_]*.py ; do
 	[[ -f $F ]] || continue
 	F=${F%.py}
