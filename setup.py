@@ -25,7 +25,7 @@ setup(
     license="MIT",
     url="https://github.com/jcs-lambda/lambdata-jcs-lambda",
     keywords="lambda school",
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     python_requires = ">=3.5",
     install_requires = REQUIRES,
 )
