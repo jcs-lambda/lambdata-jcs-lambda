@@ -1,5 +1,17 @@
-"""
-utility functions for working with dataframes
+"""Utility functions for working with dataframes
+
+tvt_split: split a dataframe into 3 sets
+
+expand_date_parts: replace dates in a dataframe column with date parts
+
+describe: create a summary of a dataframe
+
+barplot_feat_by_target_eq_class: barplot of feature1 by feature2==X
+
+barplots_low_card_feat_by_target_eq_class: barplot for each low-cardinality
+feature by some_feature==X
+
+value_counts: actual and normalized value counts
 """
 
 import pandas as pd
@@ -12,15 +24,20 @@ from IPython.display import display
 
 
 def tvt_split(df, target: str='', random_state=None):
-    """
-    Split a pandas dataframe into train, validation, and test sets.
+    """Split a dataframe into train, validation, and test sets.
 
-    :param df: pandas dataframe, required
-    :param target: name of a column in df which is passed as stratify
-        parameter to sklearn.model_selection.train_test_split(), optional
-    :param random_state: define the random_state
+    Parameters:
 
-    :returns: tuple of 3 dataframes - (train, validation, test)
+    df: pandas dataframe
+
+    target: name of a column passed as stratify parameter to
+    sklearn.model_selection.train_test_split(), optional
+
+    random_state: int or None, optional, default: None
+
+    Returns:
+
+    tuple of 3 dataframes: (train, validation, test)
     """
     if target != '' and target in df.columns:
         stratify = df[target]
@@ -48,20 +65,25 @@ def tvt_split(df, target: str='', random_state=None):
 
 
 def extract_date_parts(dataframe, date_column, simple=True):
-    """
-    Convert a column to datetime, then replace it with columns representing
-    datetime parts: month, day, year, etc.
+    """Replace single date-like column with columns representing date parts.
 
-    :param dataframe: pandas dataframe that contains a date-like column
-    :param date_column: name of date-like column
-    :param simple: if True, only convert to year, month, and day
-        if False, also include day_of_week, day_of_year, week, and quarter
-        optional, default: False
+    Parameters:
 
-    :returns: a new dataframe with date_column removed and other columns added
+    dataframe: pandas dataframe
+
+    date_column: name of date-like column to send to pandas.to_datetime()
+
+    simple: True - convert to year, month, and day. False - also include
+    day_of_week, day_of_year, week, and quarter, optional, default: False
+
+    Returns:
+
+    pandas dataframe with date_column removed and other columns added
     """
-    assert date_column in dataframe.columns, \
-        f'{date_column} not found in dataframe'
+    if date_column not in dataframe.columns:
+        raise KeyError(
+            f'dataframe does not contain column: {date_column}'
+        )
     df = dataframe.copy()
     datetimes = pd.to_datetime(
         df[date_column], infer_datetime_format=True, errors='coerce')
@@ -78,20 +100,18 @@ def extract_date_parts(dataframe, date_column, simple=True):
 
 
 def describe(dataframe, formatter={'all': lambda x: f'{x}'}):
-    """
-    Describe type, total, present, null, nunique, minified_unique, and unique
-        items in a dataframe. total=number of row. present=count of not-nan
-        values. null=count of nan values. nunique=count of unique values.
-        minified_unique=count of normalized strings. unique=string of unique
-        values.
-    If nunique == minified_unique for all columns, minified_unique is dropped
-        from the output.
+    """Return a dataframe with summary description.
 
-    :param dataframe: pandas dataframe
-    :param formatter: numpy formatter used in numpy.array2string
-        pass None to use default numpy formatting
+    Parameters:
 
-    :returns: pandas dataframe describing the dataframe passed as first param
+    dataframe: pandas dataframe
+
+    formatter: numpy formatter used in numpy.array2string. optional,
+    pass None to use default numpy formatting.
+
+    Returns
+
+    pandas dataframe
     """
     def len_minified(series):
         if not series.dtype == 'O':
@@ -126,28 +146,40 @@ def barplot_feat_by_target_eq_class(
         target_class,
         dataframe,
         ylim=0.7,
-        figsize=(9, 6)
-):
+        figsize=(9, 6)):
+    """Display barplot of x feature by (y target == target_class).
+
+    Parameters:
+
+    feature: name of column to use as x feature
+
+    target: name of column to use as y target
+
+    target_class: value tested for equality with each value in y target
+
+    dataframe: pandas dataframe
+
+    ylim: upper limit of y-axis, optional, default: 0.7
+
+    figsize: size of matplotlib figure, optional, default: (9, 6)
+
+    Returns:
+
+    nothing
     """
-    Display a Seaborn barplot of x feature by (y target == target_class).
-
-    :param feature: name of column to use as x feature
-    :param target: name of column to use as y target
-    :param target_class: value whose equality is tested with each value in
-        y target
-    :param dataframe: pandas dataframe containing feature and target columns
-    :param ylim: upper limit of y-axis, optional, default: 0.7
-    :param figsize: size of matplotlib figure, optional, default: (9, 6)
-
-    :returns: nothing
-    """
-
-    assert feature in dataframe.columns, \
-        f'FEATURE: {feature} NOT FOUND IN DATAFRAME.columns'
-    assert target in dataframe.columns, \
-        f'TARGET: {target} NOT FOUND IN DATAFRAME.columns'
-    assert target_class in dataframe[target].unique(), \
-        f'TARGET CLASS: {target_class} NOT FOUND IN DATAFRAME[\'{target}\']'
+    if feature not in dataframe.columns:
+        raise KeyError(
+            f'dataframe does not contain feature column: {feature}'
+        )
+    if target not in dataframe.columns:
+        raise KeyError(
+            f'dataframe does not contain target column: {target}'
+        )
+    if target_class not in dataframe[target].unique():
+        raise ValueError(
+            f"dataframe['{target}'] does not contain" +
+            f" target_class: {target_class}"
+        )
     fig, ax = plt.subplots(figsize=figsize)
     sns.barplot(
         ax=ax,
@@ -168,25 +200,32 @@ def barplots_low_card_feat_by_target_eq_class(
         dataframe,
         nunique=15,
         ylim=0.7,
-        figsize=(9, 6)
-):
-    """
-    Display Seaborn barplots of x feature by (y target == target_class)
-        for features in a dataframe with <= nunique unique values.
+        figsize=(9, 6)):
+    """Display barplots of x feature by (y target == target_class)
+    for features in a dataframe with <= nunique unique values.
 
-    :param target: name of column to use as y target
-    :param target_class: value whose equality is tested with each value in
-        y target
-    :param dataframe: pandas dataframe target column
-    :param nunique: limit features to those which have <= this value unique
-        values, optional, default: 15
-    :param ylim: upper limit of y-axis, optional, default: 0.7
-    :param figsize: size of matplotlib figure, optional, default: (9, 6)
+    Parameters:
 
-    :returns: nothing
+    target: name of column to use as y target
+
+    target_class: value whose equality is tested with each value in target
+
+    dataframe: pandas dataframe
+
+    nunique: max number of unique values for features to plot
+
+    ylim: upper limit of y-axis, optional, default: 0.7
+
+    figsize: size of matplotlib figure, optional, default: (9, 6)
+
+    Returns:
+
+    nothing
     """
-    assert target in dataframe.columns, \
-        f'TARGET: {target} NOT FOUND IN DATAFRAME.columns'
+    if target not in dataframe.columns:
+        raise KeyError(
+            f'dataframe does not contain target column: {target}'
+        )
     for feature in dataframe.columns[
             (dataframe.nunique() <= nunique) & (dataframe.nunique() > 1)] \
             .drop([target], errors='ignore'):
@@ -202,20 +241,26 @@ def barplots_low_card_feat_by_target_eq_class(
 
 
 def value_counts(dataframe, features):
-    """
-    Display value counts and normalized value counts together for one or more
-        features in a pandas dataframe.
+    """Display actual and normalized value counts for one or more features.
 
-    :param dataframe: pandas dataframe
-    :param features: a feature or list of features found in the dataframe
+    Displayed with ipython for multiple outputs in one notebook cell.
 
-    :returns: nothing
+    Parameters:
+
+    dataframe: pandas dataframe
+
+    features: feature name or list-like of feature names
+
+    Returns:
+
+    nothing
     """
-    if not isinstance(features, (list, set, tuple)):
+    if not isinstance(features, (list, set, tuple, np.ndarray, pd.Series)):
         features = [features]
     for feature in features:
-        assert feature in dataframe.columns, \
-            f'{feature} not found in dataframe'
+        if feature not in dataframe.columns:
+            print(f'dataframe does not contain feature: {feature}')
+            continue
         df = pd.DataFrame({
             'count': dataframe[feature].value_counts().sort_index(),
             'percentage': dataframe[feature].value_counts(normalize=True)
