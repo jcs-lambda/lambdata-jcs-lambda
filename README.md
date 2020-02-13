@@ -3,9 +3,7 @@
 
  current source version: 0.4.2
  
- current test.pypi version: 0.4.1
-
- difference: docstrings
+ current test.pypi version: 0.4.2
 
 ## Installation
 
