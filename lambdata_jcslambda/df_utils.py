@@ -1,5 +1,7 @@
 """Utility functions for working with dataframes
 
+Functions:
+
 tvt_split: split a dataframe into 3 sets
 
 expand_date_parts: replace dates in a dataframe column with date parts
@@ -64,7 +66,7 @@ def tvt_split(df, target: str='', random_state=None):
     return train, val, test
 
 
-def extract_date_parts(dataframe, date_column, simple=True):
+def expand_date_parts(dataframe, date_column, simple=True):
     """Replace single date-like column with columns representing date parts.
 
     Parameters:
