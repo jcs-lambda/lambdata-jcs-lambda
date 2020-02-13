@@ -40,6 +40,11 @@ class Test_df_utils(unittest.TestCase):
         }
         self.df = pd.DataFrame(data)
 
+    def tearDown(self):
+        """Cleanup after each test."""
+        del self.random_state
+        del self.df
+
     def test_tvt_split(self):
         """Test tvt_split"""
         original_shape = self.df.shape
