@@ -3,7 +3,7 @@
 Explorator: class to operate on a single dataframe with df_utils functions.
 """
 
-from .df_utils import tvt_split, extract_date_parts
+from .df_utils import tvt_split, expand_date_parts
 from .df_utils import describe, value_counts
 from .df_utils import barplot_feat_by_target_eq_class
 from .df_utils import barplots_low_card_feat_by_target_eq_class
@@ -54,7 +54,7 @@ class Explorator(object):
         self.random_state = random_state
 
     def tvt_split(self, target: str = ''):
-        """Split a dataframe into train, validation, and test sets.
+        """Split into train, val, and test sets and store in class.
 
         Parameters:
 
@@ -63,9 +63,15 @@ class Explorator(object):
 
         Returns:
 
-        tuple of 3 dataframes: (train, validation, test)
+        nothing
+
+        creates instance properties: self.train, self.val, and self.test
         """
-        return tvt_split(self.df, target, self.random_state)
+        tr, v, ts = tvt_split(self.df, target, self.random_state)
+        self.train = tr
+        self.val = v
+        self.test = ts
+        return
 
     def expand_date_parts(self, date_column: str, simple=True, inplace=False):
         """Replace single date-like column with date parts columns.
